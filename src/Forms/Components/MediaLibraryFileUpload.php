@@ -19,32 +19,14 @@ class MediaLibraryFileUpload extends FileUpload
         $this->dehydrated(false);
     }
 
-    public function deleteUploadedFile(): static
-    {
-        $file = $this->getState();
-
-        if ($callback = $this->deleteUploadedFileUsing) {
-            $this->evaluate($callback, [
-                'file' => $file,
-            ]);
-        } else {
-            Media::findByUuid($file)?->delete();
-        }
-
-        return $this;
-    }
-
     public function getUploadedFile()
     {
-        if (! ($state = $this->getState())) {
-            $state = $this->getUploadedFileFromMediaLibrary();
+        $state = $this->getState();
+
+        if ($state) {
+            return $state;
         }
 
-        return $state;
-    }
-
-    public function getUploadedFileFromMediaLibrary(): ?string
-    {
         if (! ($model = $this->getMediaLibraryModel())) {
             return null;
         }
@@ -58,32 +40,6 @@ class MediaLibraryFileUpload extends FileUpload
         }
 
         return $media->uuid;
-    }
-
-    public function getUploadedFileUrl(): ?string
-    {
-        if ($callback = $this->getUploadedFileUrlUsing) {
-            return $this->evaluate($callback);
-        }
-
-        return $this->getUploadedFileUrlFromMediaLibrary();
-    }
-
-    public function getUploadedFileUrlFromMediaLibrary(): ?string
-    {
-        if (! $this->getMediaLibraryModel()) {
-            return null;
-        }
-
-        if (! ($mediaUuid = $this->getState())) {
-            return null;
-        }
-
-        if ($mediaUuid instanceof SplFileInfo) {
-            return null;
-        }
-
-        return Media::findByUuid($mediaUuid)?->getUrl();
     }
 
     public function mediaLibraryCollection(string | callable $collection): static
@@ -100,16 +56,17 @@ class MediaLibraryFileUpload extends FileUpload
         return $this;
     }
 
-    public function saveUploadedFile()
+    public function getMediaLibraryCollection(): ?string
     {
-        if ($callback = $this->saveUploadedFileUsing) {
-            return $this->evaluate($callback);
-        }
-
-        return $this->saveUploadedFileToMediaLibrary();
+        return $this->evaluate($this->mediaLibraryCollection);
     }
 
-    public function saveUploadedFileToMediaLibrary()
+    public function getMediaLibraryModel(): ?HasMedia
+    {
+        return $this->evaluate($this->mediaLibraryModel) ?? $this->getContainer()->getMediaLibraryModel() ?? null;
+    }
+
+    protected function handleUpload()
     {
         $file = $this->getState();
 
@@ -129,13 +86,25 @@ class MediaLibraryFileUpload extends FileUpload
         return $media->uuid;
     }
 
-    public function getMediaLibraryCollection(): ?string
+    protected function handleUploadedFileDeletion(): void
     {
-        return $this->evaluate($this->mediaLibraryCollection);
+        Media::findByUuid($this->getState())?->delete();
     }
 
-    public function getMediaLibraryModel(): ?HasMedia
+    protected function handleUploadedFileUrlRetrieval(): ?string
     {
-        return $this->evaluate($this->mediaLibraryModel) ?? $this->getContainer()->getMediaLibraryModel() ?? null;
+        if (! $this->getMediaLibraryModel()) {
+            return null;
+        }
+
+        if (! ($mediaUuid = $this->getState())) {
+            return null;
+        }
+
+        if ($mediaUuid instanceof SplFileInfo) {
+            return null;
+        }
+
+        return Media::findByUuid($mediaUuid)?->getUrl();
     }
 }
