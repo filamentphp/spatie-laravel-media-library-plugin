@@ -17,6 +17,10 @@ class MediaLibraryFileUpload extends FileUpload
         parent::setUp();
 
         $this->dehydrated(false);
+
+        $this->hydrateStateUsing(function () {
+            return $this->getUploadedFile();
+        });
     }
 
     public function getUploadedFile()
@@ -56,6 +60,13 @@ class MediaLibraryFileUpload extends FileUpload
         return $this;
     }
 
+    public function removeUploadedFile(): static
+    {
+        $this->deleteUploadedFile();
+
+        return $this->state(null);
+    }
+
     public function getMediaLibraryCollection(): ?string
     {
         return $this->evaluate($this->mediaLibraryCollection);
@@ -66,10 +77,8 @@ class MediaLibraryFileUpload extends FileUpload
         return $this->evaluate($this->mediaLibraryModel) ?? $this->getContainer()->getMediaLibraryModel() ?? null;
     }
 
-    protected function handleUpload()
+    protected function handleUpload($file)
     {
-        $file = $this->getState();
-
         if (! ($model = $this->getMediaLibraryModel())) {
             return $file;
         }
@@ -81,30 +90,26 @@ class MediaLibraryFileUpload extends FileUpload
             ->usingFileName($file->getFilename())
             ->toMediaCollection($collection);
 
-        $this->state($media->uuid);
-
         return $media->uuid;
     }
 
-    protected function handleUploadedFileDeletion(): void
+    protected function handleUploadedFileDeletion($file): void
     {
-        Media::findByUuid($this->getState())?->delete();
+        if (! $file) return;
+
+        Media::findByUuid($file)?->delete();
     }
 
-    protected function handleUploadedFileUrlRetrieval(): ?string
+    protected function handleUploadedFileUrlRetrieval($file): ?string
     {
         if (! $this->getMediaLibraryModel()) {
             return null;
         }
 
-        if (! ($mediaUuid = $this->getState())) {
+        if ($file instanceof SplFileInfo) {
             return null;
         }
 
-        if ($mediaUuid instanceof SplFileInfo) {
-            return null;
-        }
-
-        return Media::findByUuid($mediaUuid)?->getUrl();
+        return Media::findByUuid($file)?->getUrl();
     }
 }
