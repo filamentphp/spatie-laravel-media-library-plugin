@@ -1,0 +1,10 @@
+parameters:
+    paths:
+        - src
+    level: 5
+    ignoreErrors:
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$meta#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::addMediaFromString\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::getMediaLibraryModel\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::getParentComponent\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::getUrl\(\)#'
