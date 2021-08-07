@@ -95,7 +95,9 @@ class MediaLibraryFileUpload extends FileUpload
 
     protected function handleUploadedFileDeletion($file): void
     {
-        if (! $file) return;
+        if (! $file) {
+            return;
+        }
 
         Media::findByUuid($file)?->delete();
     }
