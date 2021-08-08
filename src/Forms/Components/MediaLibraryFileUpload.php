@@ -20,7 +20,7 @@ class MediaLibraryFileUpload extends FileUpload
         $this->dehydrated(false);
 
         $this->hydrateStateUsing(function (MediaLibraryFileUpload $component, $state) {
-            if ($component->getContainer()->getParentComponent() instanceof MultipleMediaLibraryFileUpload) {
+            if ($component->isMultiple()) {
                 return $state;
             }
 
@@ -70,13 +70,6 @@ class MediaLibraryFileUpload extends FileUpload
         $this->model = $model;
 
         return $this;
-    }
-
-    public function removeUploadedFile(): static
-    {
-        $this->deleteUploadedFile();
-
-        return $this->state(null);
     }
 
     public function getCollection(): ?string
@@ -136,6 +129,13 @@ class MediaLibraryFileUpload extends FileUpload
         }
 
         Media::findByUuid($file)?->delete();
+    }
+
+    protected function handleUploadedFileRemoval($file): void
+    {
+        $this->deleteUploadedFile();
+
+        $this->state(null);
     }
 
     protected function handleUploadedFileUrlRetrieval($file): ?string

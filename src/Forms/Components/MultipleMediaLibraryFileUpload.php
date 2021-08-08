@@ -72,7 +72,7 @@ class MultipleMediaLibraryFileUpload extends MultipleFileUpload
 
     public function getCollection(): ?string
     {
-        return $this->evaluate($this->collection);
+        return $this->evaluate($this->collection) ?? $this->getName();
     }
 
     public function getModel(): ?HasMedia
