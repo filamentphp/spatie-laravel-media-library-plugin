@@ -3,15 +3,12 @@
 namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components;
 
 use Filament\Forms2\Components\FileUpload;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use SplFileInfo;
 
 class MediaLibraryFileUpload extends FileUpload
 {
     protected $collection = null;
-
-    protected $model = null;
 
     public function setUp(): void
     {
@@ -65,13 +62,6 @@ class MediaLibraryFileUpload extends FileUpload
         return $this;
     }
 
-    public function mediaLibraryModel(HasMedia | callable $model): static
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
     public function getCollection(): ?string
     {
         if ($collection = $this->evaluate($this->collection)) {
@@ -85,25 +75,6 @@ class MediaLibraryFileUpload extends FileUpload
         }
 
         return $containerParentComponent->getCollection();
-    }
-
-    public function getModel(): ?HasMedia
-    {
-        if ($model = $this->evaluate($this->model)) {
-            return $model;
-        }
-
-        if ($model = $this->getContainer()->getMediaLibraryModel()) {
-            return $model;
-        }
-
-        $containerParentComponent = $this->getContainer()->getParentComponent();
-
-        if (! $containerParentComponent instanceof MultipleMediaLibraryFileUpload) {
-            return null;
-        }
-
-        return $containerParentComponent->getModel();
     }
 
     protected function handleUpload($file)

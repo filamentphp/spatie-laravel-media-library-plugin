@@ -12,9 +12,4 @@ class SpatieLaravelMediaLibraryPluginServiceProvider extends PackageServiceProvi
     {
         $package->name('filament-spatie-laravel-media-library-plugin');
     }
-
-    public function packageBooted(): void
-    {
-        ComponentContainer::mixin(new Forms\ComponentContainerMixin());
-    }
 }

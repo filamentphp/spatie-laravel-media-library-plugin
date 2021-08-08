@@ -4,14 +4,12 @@ namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components;
 
 use Filament\Forms2\Components\Component;
 use Filament\Forms2\Components\MultipleFileUpload;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\HasMedia;
 
 class MultipleMediaLibraryFileUpload extends MultipleFileUpload
 {
     protected $collection = null;
-
-    protected $model = null;
 
     protected function setUp(): void
     {
@@ -63,25 +61,9 @@ class MultipleMediaLibraryFileUpload extends MultipleFileUpload
         return $this;
     }
 
-    public function model(HasMedia | callable $model): static
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
     public function getCollection(): ?string
     {
         return $this->evaluate($this->collection) ?? $this->getName();
-    }
-
-    public function getModel(): ?HasMedia
-    {
-        if ($model = $this->evaluate($this->model)) {
-            return $model;
-        }
-
-        return $this->getContainer()->getMediaLibraryModel();
     }
 
     protected function getDefaultUploadComponent(): Component
