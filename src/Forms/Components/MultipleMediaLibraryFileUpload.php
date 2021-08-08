@@ -4,7 +4,6 @@ namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components;
 
 use Filament\Forms2\Components\Component;
 use Filament\Forms2\Components\MultipleFileUpload;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class MultipleMediaLibraryFileUpload extends MultipleFileUpload
