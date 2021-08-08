@@ -2,6 +2,7 @@
 
 namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms;
 
+use Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components\MultipleMediaLibraryFileUpload;
 use Spatie\MediaLibrary\HasMedia;
 
 class ComponentContainerMixin
@@ -18,7 +19,24 @@ class ComponentContainerMixin
     public function getMediaLibraryModel(): callable
     {
         return function (): ?HasMedia {
-            return $this->meta['mediaLibraryModel'] ?? $this->getParentComponent()?->getContainer()->getMediaLibraryModel() ?? null;
+            if ($model = $this->meta['mediaLibraryModel'] ?? null) {
+                return $model;
+            }
+
+            $parentComponent = $this->getParentComponent();
+
+            if (! $parentComponent) {
+                return null;
+            }
+
+            if (
+                $parentComponent instanceof MultipleMediaLibraryFileUpload &&
+                ($model = $parentComponent->getModel())
+            ) {
+                return $model;
+            }
+
+            return $parentComponent->getContainer()->getMediaLibraryModel();
         };
     }
 }

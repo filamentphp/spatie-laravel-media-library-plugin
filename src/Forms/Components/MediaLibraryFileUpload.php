@@ -1,25 +1,30 @@
 <?php
 
-namespace Filament\SpatieLaravelMedialibraryPlugin\Forms\Components;
+namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components;
 
 use Filament\Forms2\Components\FileUpload;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use SplFileInfo;
 
 class MediaLibraryFileUpload extends FileUpload
 {
-    protected $mediaLibraryCollection = null;
+    protected $collection = null;
 
-    protected $mediaLibraryModel = null;
+    protected $model = null;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->dehydrated(false);
 
-        $this->hydrateStateUsing(function () {
-            return $this->getUploadedFile();
+        $this->hydrateStateUsing(function (MediaLibraryFileUpload $component, $state) {
+            if ($component->getContainer()->getParentComponent() instanceof MultipleMediaLibraryFileUpload) {
+                return $state;
+            }
+
+            return $component->getUploadedFile();
         });
     }
 
@@ -31,12 +36,19 @@ class MediaLibraryFileUpload extends FileUpload
             return $state;
         }
 
-        if (! ($model = $this->getMediaLibraryModel())) {
+        $collection = $this->getCollection();
+        $model = $this->getModel();
+
+        if (! $collection) {
+            return null;
+        }
+
+        if (! $model) {
             return null;
         }
 
         $media = $model
-            ->getMedia($this->getMediaLibraryCollection())
+            ->getMedia($this->getCollection())
             ->first();
 
         if (! $media) {
@@ -48,14 +60,14 @@ class MediaLibraryFileUpload extends FileUpload
 
     public function mediaLibraryCollection(string | callable $collection): static
     {
-        $this->mediaLibraryCollection = $collection;
+        $this->collection = $collection;
 
         return $this;
     }
 
     public function mediaLibraryModel(HasMedia | callable $model): static
     {
-        $this->mediaLibraryModel = $model;
+        $this->model = $model;
 
         return $this;
     }
@@ -67,23 +79,47 @@ class MediaLibraryFileUpload extends FileUpload
         return $this->state(null);
     }
 
-    public function getMediaLibraryCollection(): ?string
+    public function getCollection(): ?string
     {
-        return $this->evaluate($this->mediaLibraryCollection);
+        if ($collection = $this->evaluate($this->collection)) {
+            return $collection;
+        }
+
+        $containerParentComponent = $this->getContainer()->getParentComponent();
+
+        if (! $containerParentComponent instanceof MultipleMediaLibraryFileUpload) {
+            return null;
+        }
+
+        return $containerParentComponent->getCollection();
     }
 
-    public function getMediaLibraryModel(): ?HasMedia
+    public function getModel(): ?HasMedia
     {
-        return $this->evaluate($this->mediaLibraryModel) ?? $this->getContainer()->getMediaLibraryModel() ?? null;
+        if ($model = $this->evaluate($this->model)) {
+            return $model;
+        }
+
+        if ($model = $this->getContainer()->getMediaLibraryModel()) {
+            return $model;
+        }
+
+        $containerParentComponent = $this->getContainer()->getParentComponent();
+
+        if (! $containerParentComponent instanceof MultipleMediaLibraryFileUpload) {
+            return null;
+        }
+
+        return $containerParentComponent->getModel();
     }
 
     protected function handleUpload($file)
     {
-        if (! ($model = $this->getMediaLibraryModel())) {
+        if (! ($model = $this->getModel())) {
             return $file;
         }
 
-        $collection = $this->getMediaLibraryCollection();
+        $collection = $this->getCollection();
 
         $media = $model
             ->addMediaFromString($file->get())
@@ -104,7 +140,7 @@ class MediaLibraryFileUpload extends FileUpload
 
     protected function handleUploadedFileUrlRetrieval($file): ?string
     {
-        if (! $this->getMediaLibraryModel()) {
+        if (! $this->getModel()) {
             return null;
         }
 
