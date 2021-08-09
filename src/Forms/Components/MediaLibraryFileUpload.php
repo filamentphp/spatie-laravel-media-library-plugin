@@ -36,11 +36,7 @@ class MediaLibraryFileUpload extends FileUpload
         $collection = $this->getCollection();
         $model = $this->getModel();
 
-        if (! $collection) {
-            return null;
-        }
-
-        if (! $model) {
+        if (! ($collection && $model)) {
             return null;
         }
 
@@ -60,6 +56,11 @@ class MediaLibraryFileUpload extends FileUpload
         $this->collection = $collection;
 
         return $this;
+    }
+
+    public function saveRelationships(): void
+    {
+        $this->saveUploadedFile();
     }
 
     public function getCollection(): ?string
@@ -83,12 +84,10 @@ class MediaLibraryFileUpload extends FileUpload
             return $file;
         }
 
-        $collection = $this->getCollection();
-
         $media = $model
             ->addMediaFromString($file->get())
             ->usingFileName($file->getFilename())
-            ->toMediaCollection($collection);
+            ->toMediaCollection($this->getCollection());
 
         return $media->uuid;
     }
