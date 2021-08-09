@@ -2,7 +2,6 @@
 
 namespace Filament\SpatieLaravelMediaLibraryPlugin;
 
-use Filament\Forms2\ComponentContainer;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
