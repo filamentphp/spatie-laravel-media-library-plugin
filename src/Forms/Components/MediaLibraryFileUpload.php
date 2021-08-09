@@ -14,6 +14,8 @@ class MediaLibraryFileUpload extends FileUpload
     {
         parent::setUp();
 
+        $this->beforeStateDehydrated(null);
+
         $this->dehydrated(false);
 
         $this->hydrateStateUsing(function (MediaLibraryFileUpload $component, $state) {
@@ -23,6 +25,13 @@ class MediaLibraryFileUpload extends FileUpload
 
             return $component->getUploadedFile();
         });
+    }
+
+    public function collection(string | callable $collection): static
+    {
+        $this->collection = $collection;
+
+        return $this;
     }
 
     public function getUploadedFile()
@@ -49,13 +58,6 @@ class MediaLibraryFileUpload extends FileUpload
         }
 
         return $media->uuid;
-    }
-
-    public function mediaLibraryCollection(string | callable $collection): static
-    {
-        $this->collection = $collection;
-
-        return $this;
     }
 
     public function saveRelationships(): void
