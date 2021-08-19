@@ -1,8 +1,7 @@
 <?php
 
-namespace Filament\SpatieLaravelMediaLibraryPlugin\Forms\Components;
+namespace Filament\Forms\Components;
 
-use Filament\Forms2\Components\FileUpload;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use SplFileInfo;
 

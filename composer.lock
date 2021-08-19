@@ -662,7 +662,7 @@
             "time": "2020-12-29T14:50:06+00:00"
         },
         {
-            "name": "filament/forms2",
+            "name": "filament/forms",
             "version": "dev-develop",
             "dist": {
                 "type": "path",
@@ -687,13 +687,13 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Filament\\Forms2\\FormsServiceProvider"
+                        "Filament\\Forms\\FormsServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Filament\\Forms2\\": "src"
+                    "Filament\\Forms\\": "src"
                 }
             },
             "autoload-dev": {
@@ -6410,7 +6410,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "filament/forms2": 20
+        "filament/forms": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
