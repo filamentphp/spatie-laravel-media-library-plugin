@@ -8,21 +8,21 @@ class MultipleMediaLibraryFileUpload extends MultipleFileUpload
 {
     protected $collection = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dehydrated(false);
-
-        $this->hydrateStateUsing(function (MultipleMediaLibraryFileUpload $component) {
+        $this->afterStateHydrated(function (MultipleMediaLibraryFileUpload $component, callable $setState) {
             $state = $component->getUploadedFiles();
 
             $state[(string) Str::uuid()] = [
                 'file' => null,
             ];
 
-            return $state;
+            $component->state($state);
         });
+
+        $this->dehydrated(false);
     }
 
     public function getUploadedFiles(): array

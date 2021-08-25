@@ -9,21 +9,21 @@ class MediaLibraryFileUpload extends FileUpload
 {
     protected $collection = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+
+        $this->afterStateHydrated(function (MediaLibraryFileUpload $component) {
+            if ($component->isMultiple()) {
+                return;
+            }
+
+            $component->state($component->getUploadedFile());
+        });
 
         $this->beforeStateDehydrated(null);
 
         $this->dehydrated(false);
-
-        $this->hydrateStateUsing(function (MediaLibraryFileUpload $component, $state) {
-            if ($component->isMultiple()) {
-                return $state;
-            }
-
-            return $component->getUploadedFile();
-        });
     }
 
     public function collection(string | callable $collection): static
