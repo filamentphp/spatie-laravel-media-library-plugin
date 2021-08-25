@@ -5,7 +5,7 @@ namespace Filament\Forms\Components;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use SplFileInfo;
 
-class MediaLibraryFileUpload extends FileUpload
+class SpatieMediaLibraryFileUpload extends FileUpload
 {
     protected $collection = null;
 
@@ -13,7 +13,7 @@ class MediaLibraryFileUpload extends FileUpload
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (MediaLibraryFileUpload $component) {
+        $this->afterStateHydrated(function (SpatieMediaLibraryFileUpload $component) {
             if ($component->isMultiple()) {
                 return;
             }
@@ -72,7 +72,7 @@ class MediaLibraryFileUpload extends FileUpload
 
         $containerParentComponent = $this->getContainer()->getParentComponent();
 
-        if (! $containerParentComponent instanceof MultipleMediaLibraryFileUpload) {
+        if (! $containerParentComponent instanceof SpatieMediaLibraryMultipleFileUpload) {
             return null;
         }
 

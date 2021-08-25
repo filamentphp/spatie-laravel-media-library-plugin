@@ -4,7 +4,7 @@ namespace Filament\Forms\Components;
 
 use Illuminate\Support\Str;
 
-class MultipleMediaLibraryFileUpload extends MultipleFileUpload
+class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
 {
     protected $collection = null;
 
@@ -12,7 +12,7 @@ class MultipleMediaLibraryFileUpload extends MultipleFileUpload
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (MultipleMediaLibraryFileUpload $component, callable $setState) {
+        $this->afterStateHydrated(function (SpatieMediaLibraryMultipleFileUpload $component, callable $setState) {
             $state = $component->getUploadedFiles();
 
             $state[(string) Str::uuid()] = [
@@ -65,6 +65,6 @@ class MultipleMediaLibraryFileUpload extends MultipleFileUpload
 
     protected function getDefaultUploadComponent(): Component
     {
-        return MediaLibraryFileUpload::make('file');
+        return SpatieMediaLibraryFileUpload::make('file');
     }
 }
