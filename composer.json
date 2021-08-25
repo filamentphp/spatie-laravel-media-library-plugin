@@ -2,10 +2,10 @@
     "name": "filament/spatie-laravel-media-library-plugin",
     "description": "Filament support for `spatie/laravel-medialibrary`.",
     "license": "MIT",
-    "homepage": "https://github.com/laravel-filament/spatie-laravel-medialibrary-plugin",
+    "homepage": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin",
     "support": {
-        "issues": "https://github.com/laravel-filament/spatie-laravel-medialibrary-plugin/issues",
-        "source": "https://github.com/laravel-filament/spatie-laravel-medialibrary-plugin"
+        "issues": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin/issues",
+        "source": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin"
     },
     "require": {
         "php": "^8.0",
