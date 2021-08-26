@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e2969169a51f07698b7e0404a56e95d",
+    "content-hash": "b429bf9c19ec2149b13b6b58318df9c6",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -597,11 +597,11 @@
         },
         {
             "name": "filament/forms",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../forms",
-                "reference": "9d222bdc7a297ca336cb704b75c6ea32644f80f9"
+                "reference": "965748f91114ce32d26a15d08a9b5a4c6f7102f5"
             },
             "require": {
                 "blade-ui-kit/blade-heroicons": "^1.2",

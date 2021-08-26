@@ -9,7 +9,7 @@
     },
     "require": {
         "php": "^8.0",
-        "filament/forms": "dev-develop",
+        "filament/forms": "dev-main",
         "spatie/laravel-medialibrary": "^9.0"
     },
     "require-dev": {
