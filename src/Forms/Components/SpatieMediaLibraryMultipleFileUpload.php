@@ -12,7 +12,7 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (SpatieMediaLibraryMultipleFileUpload $component, callable $setState) {
+        $this->afterStateHydrated(function (SpatieMediaLibraryMultipleFileUpload $component) {
             $state = $component->getUploadedFiles();
 
             $state[(string) Str::uuid()] = [
