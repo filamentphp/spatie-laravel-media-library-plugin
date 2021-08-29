@@ -1,8 +1,0 @@
-parameters:
-    paths:
-        - src
-    level: 5
-    ignoreErrors:
-        - '#Call to an undefined method [a-zA-Z0-9\\_]+::addMediaFromString\(\)#'
-        - '#Call to an undefined method [a-zA-Z0-9\\_]+::getMedia\(\)#'
-        - '#Call to an undefined method [a-zA-Z0-9\\_]+::getUrl\(\)#'

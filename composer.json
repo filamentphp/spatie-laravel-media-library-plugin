@@ -2,38 +2,24 @@
     "name": "filament/spatie-laravel-media-library-plugin",
     "description": "Filament support for `spatie/laravel-medialibrary`.",
     "license": "MIT",
-    "homepage": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin",
+    "homepage": "https://github.com/laravel-filament/filament",
     "support": {
-        "issues": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin/issues",
-        "source": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin"
+        "issues": "https://github.com/laravel-filament/filament/issues",
+        "source": "https://github.com/laravel-filament/filament"
     },
     "require": {
         "php": "^8.0",
-        "filament/forms": "dev-main",
+        "filament/forms": "self.version",
         "spatie/laravel-medialibrary": "^9.0"
-    },
-    "require-dev": {
-        "phpstan/phpstan": "^0.12.94"
     },
     "autoload": {
         "psr-4": {
             "Filament\\": "src"
         }
     },
-    "scripts": {
-        "test": [
-            "vendor/bin/phpstan"
-        ]
-    },
     "config": {
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": {
-        "local": {
-            "type": "path",
-            "url": "../forms"
-        }
-    }
+    "prefer-stable": true
 }
