@@ -53,7 +53,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
             /** @var \League\Flysystem\Filesystem $storageDriver */
             $storageDriver = $storage->getDriver();
 
-            if (! $component->getModel()) {
+            if (! $component->getRecord()) {
                 return null;
             }
 
@@ -84,7 +84,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
             $media = $mediaAdder
                 ->usingFileName($file->getFilename())
-                ->toMediaCollection($component->getCollection());
+                ->toMediaCollection($component->getCollection(), $component->getDiskName());
 
             return $media->getAttributeValue('uuid');
         });
