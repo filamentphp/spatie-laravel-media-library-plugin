@@ -57,8 +57,10 @@ class SpatieMediaLibraryFileUpload extends FileUpload
                 return null;
             }
 
+            $mediaClass = config('media-library.media_model', Media::class);
+
             /** @var ?Media $media */
-            $media = Media::findByUuid($file);
+            $media = $mediaClass::findByUuid($file);
 
             if (
                 $storageDriver->getAdapter() instanceof AwsS3Adapter &&
@@ -96,7 +98,18 @@ class SpatieMediaLibraryFileUpload extends FileUpload
                 return;
             }
 
-            Media::findByUuid($file)?->delete();
+            $mediaClass = config('media-library.media_model', Media::class);
+
+            $mediaClass::findByUuid($file)?->delete();
+        });
+
+        $this->reorderUploadedFilesUsing(function (SpatieMediaLibraryFileUpload $component, array $state): array {
+            $uuids = array_filter(array_values($state));
+            $mappedIds = Media::query()->whereIn('uuid', $uuids)->pluck('id', 'uuid')->toArray();
+
+            Media::setNewOrder(array_merge(array_flip($uuids), $mappedIds));
+
+            return $state;
         });
     }
 
