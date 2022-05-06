@@ -18,6 +18,8 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
     protected string | Closure | null $mediaName = null;
 
+    protected array $customProperties = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -125,6 +127,13 @@ class SpatieMediaLibraryFileUpload extends FileUpload
         return $this;
     }
 
+    public function customProperties(array $customProperties)
+    {
+        $this->customProperties = $properties;
+
+        return $this;
+    }
+
     public function getCollection(): string
     {
         return $this->evaluate($this->collection) ?? 'default';
@@ -133,6 +142,11 @@ class SpatieMediaLibraryFileUpload extends FileUpload
     public function getConversion(): ?string
     {
         return $this->evaluate($this->conversion);
+    }
+
+    public function getCustomProperties(): array
+    {
+        return $this->customProperties;
     }
 
     public function mediaName(string | Closure | null $name): static

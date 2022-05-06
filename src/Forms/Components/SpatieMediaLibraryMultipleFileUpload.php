@@ -11,6 +11,8 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
 {
     protected string | Closure | null $collection = null;
 
+    protected array $customProperties = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,9 +27,21 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
         return $this;
     }
 
+    public function customProperties(array $customProperties)
+    {
+        $this->customProperties = $customProperties;
+
+        return $this;
+    }
+
     public function getCollection(): ?string
     {
         return $this->evaluate($this->collection) ?? 'default';
+    }
+
+    public function getCustomProperties(): array
+    {
+        return $this->customProperties;
     }
 
     public function getUploadComponent(): Component
