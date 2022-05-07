@@ -30,11 +30,6 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
         return $this->evaluate($this->collection) ?? 'default';
     }
 
-    public function getCustomProperties(): array
-    {
-        return $this->customProperties;
-    }
-
     public function getUploadComponent(): Component
     {
         /** @var SpatieMediaLibraryFileUpload $component */
