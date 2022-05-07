@@ -11,8 +11,6 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
 {
     protected string | Closure | null $collection = null;
 
-    protected array $customProperties = [];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -23,13 +21,6 @@ class SpatieMediaLibraryMultipleFileUpload extends MultipleFileUpload
     public function collection(string | Closure | null $collection): static
     {
         $this->collection = $collection;
-
-        return $this;
-    }
-
-    public function customProperties(array $customProperties)
-    {
-        $this->customProperties = $customProperties;
 
         return $this;
     }
