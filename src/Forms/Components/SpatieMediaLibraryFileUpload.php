@@ -23,6 +23,8 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
     protected string | Closure | null $mediaName = null;
 
+    protected array | Closure | null $customHeaders = null;
+
     protected array | Closure | null $customProperties = null;
 
     protected array | Closure | null $manipulations = null;
@@ -108,6 +110,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
             $filename = $component->getUploadedFileNameForStorage($file);
 
             $media = $mediaAdder
+                ->addCustomHeaders($component->getCustomHeaders())
                 ->usingFileName($filename)
                 ->usingName($component->getMediaName($file) ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 ->storingConversionsOnDisk($component->getConversionsDisk() ?? '')
@@ -163,6 +166,13 @@ class SpatieMediaLibraryFileUpload extends FileUpload
         return $this;
     }
 
+    public function customHeaders(array | Closure | null $headers): static
+    {
+        $this->customHeaders = $headers;
+
+        return $this;
+    }
+
     public function customProperties(array | Closure | null $properties): static
     {
         $this->customProperties = $properties;
@@ -204,6 +214,11 @@ class SpatieMediaLibraryFileUpload extends FileUpload
     public function getConversionsDisk(): ?string
     {
         return $this->evaluate($this->conversionsDisk);
+    }
+
+    public function getCustomHeaders(): array
+    {
+        return $this->evaluate($this->customHeaders) ?? [];
     }
 
     public function getCustomProperties(): array
