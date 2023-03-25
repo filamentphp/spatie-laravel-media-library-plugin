@@ -5,6 +5,7 @@ namespace Filament\Forms\Components;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use League\Flysystem\UnableToCheckFileExistence;
 use Livewire\TemporaryUploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\FileAdder;
@@ -98,7 +99,11 @@ class SpatieMediaLibraryFileUpload extends FileUpload
                 return $file;
             }
 
-            if (! $file->exists()) {
+            try {
+                if (! $file->exists()) {
+                    return null;
+                }
+            } catch (UnableToCheckFileExistence $exception) {
                 return null;
             }
 
@@ -132,9 +137,10 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
         $this->reorderUploadedFilesUsing(static function (SpatieMediaLibraryFileUpload $component, array $state): array {
             $uuids = array_filter(array_values($state));
-            $mappedIds = Media::query()->whereIn('uuid', $uuids)->pluck('id', 'uuid')->toArray();
 
             $mediaClass = config('media-library.media_model', Media::class);
+
+            $mappedIds = $mediaClass::query()->whereIn('uuid', $uuids)->pluck('id', 'uuid')->toArray();
 
             $mediaClass::setNewOrder(array_merge(array_flip($uuids), $mappedIds));
 
