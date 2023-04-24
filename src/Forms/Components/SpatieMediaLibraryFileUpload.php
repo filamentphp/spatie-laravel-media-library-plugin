@@ -78,7 +78,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
             }
 
             /** @var ?Media $media */
-            $media = $component->getRecord()->getRelation('media')?->firstWhere('uuid', $file);
+            $media = $component->getRecord()->getRelationValue('media')->firstWhere('uuid', $file);
 
             $url = null;
 
