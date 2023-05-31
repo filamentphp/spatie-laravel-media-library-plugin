@@ -3,7 +3,6 @@
 namespace Filament\Tables\Columns;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Throwable;
 
@@ -67,12 +66,10 @@ class SpatieMediaLibraryImageColumn extends ImageColumn
             return $state;
         }
 
-        $firstMediaUrl = $record->getFirstMediaUrl($this->getCollection(), $this->getConversion());
-
-        return filled($firstMediaUrl) ? $firstMediaUrl : $this->getDefaultImageUrl();
+        return $record->getFirstMediaUrl($this->getCollection(), $this->getConversion());
     }
 
-    public function applyEagerLoading(Builder | Relation $query): Builder | Relation
+    public function applyEagerLoading(Builder $query): Builder
     {
         if ($this->isHidden()) {
             return $query;

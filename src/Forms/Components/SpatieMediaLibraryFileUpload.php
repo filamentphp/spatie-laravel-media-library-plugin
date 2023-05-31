@@ -149,10 +149,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
             $mappedIds = $mediaClass::query()->whereIn('uuid', $uuids)->pluck('id', 'uuid')->toArray();
 
-            $mediaClass::setNewOrder([
-                ...array_flip($uuids),
-                ...$mappedIds,
-            ]);
+            $mediaClass::setNewOrder(array_merge(array_flip($uuids), $mappedIds));
 
             return $state;
         });
