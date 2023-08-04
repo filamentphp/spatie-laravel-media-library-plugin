@@ -110,7 +110,7 @@ SpatieMediaLibraryFileUpload::make('attachment')
     ->optimize('webp'),
 ```
 
-## Resizing images
+### Resizing images
 
 You may also want to resize an image by passing in a percentage you would like to reduce the image by. This will also maintain aspect ratio.
 
