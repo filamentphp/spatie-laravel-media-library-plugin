@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use League\Flysystem\UnableToCheckFileExistence;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\TemporaryUploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\FileAdder;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
