@@ -2,7 +2,7 @@
 
 namespace Filament\Infolists\Components;
 
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Collection;
 use Throwable;
 
 class SpatieMediaLibraryImageEntry extends ImageEntry
@@ -35,8 +35,14 @@ class SpatieMediaLibraryImageEntry extends ImageEntry
         return $this->conversion ?? '';
     }
 
-    public function getImageUrl(?string $state = null): ?string
+    public function getImagePath(): ?string
     {
+        $state = $this->getState();
+
+        if ($state && (! $state instanceof Collection)) {
+            return $state;
+        }
+
         $record = $this->getRecord();
 
         if (! $record) {
@@ -49,17 +55,11 @@ class SpatieMediaLibraryImageEntry extends ImageEntry
             $record = $record->getRelationValue($relationshipName);
         }
 
-        /** @var ?Media $media */
-        $media = $record->media->first(fn (Media $media): bool => $media->uuid === $state);
-
-        if (! $media) {
-            return null;
-        }
-
-        if ($this->getVisibility() === 'private') {
+        if ($this->getVisibility() === 'private' && method_exists($record, 'getFirstTemporaryUrl')) {
             try {
-                return $media->getTemporaryUrl(
+                return $record->getFirstTemporaryUrl(
                     now()->addMinutes(5),
+                    $this->getCollection(),
                     $this->getConversion(),
                 );
             } catch (Throwable $exception) {
@@ -67,20 +67,12 @@ class SpatieMediaLibraryImageEntry extends ImageEntry
             }
         }
 
-        return $media->getAvailableUrl([$this->getConversion()]);
-    }
+        if (! method_exists($record, 'getFirstMediaUrl')) {
+            return $state;
+        }
 
-    /**
-     * @return array<string>
-     */
-    public function getState(): array
-    {
-        $collection = $this->getCollection();
+        $firstMediaUrl = $record->getFirstMediaUrl($this->getCollection(), $this->getConversion());
 
-        return $this->getRecord()->getRelationValue('media')
-            ->filter(fn (Media $media): bool => blank($collection) || ($media->getAttributeValue('collection_name') === $collection))
-            ->sortBy('order_column')
-            ->map(fn (Media $media): string => $media->uuid)
-            ->all();
+        return filled($firstMediaUrl) ? $firstMediaUrl : $this->getDefaultImageUrl();
     }
 }
