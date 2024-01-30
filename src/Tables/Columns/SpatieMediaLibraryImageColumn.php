@@ -48,14 +48,14 @@ class SpatieMediaLibraryImageColumn extends ImageColumn
         }
 
         if (! $record) {
-            return null;
+            return $this->defaultImageUrl() ?? null;
         }
 
         /** @var ?Media $media */
         $media = $record->media->first(fn (Media $media): bool => $media->uuid === $state);
 
         if (! $media) {
-            return null;
+            return $this->defaultImageUrl() ?? null;
         }
 
         $conversion = $this->getConversion();
