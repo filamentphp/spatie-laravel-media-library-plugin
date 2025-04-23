@@ -73,7 +73,13 @@ class SpatieMediaLibraryFileUpload extends FileUpload
             $component->state($media);
         });
 
-        $this->afterStateHydrated(null);
+        $this->afterStateHydrated(static function (BaseFileUpload $component, string | array | null $state): void {
+            if (is_array($state)) {
+                return;
+            }
+
+            $component->state([]);
+        });
 
         $this->beforeStateDehydrated(null);
 
@@ -116,7 +122,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
             ];
         });
 
-        $this->saveRelationshipsUsing(static function (SpatieMediaLibraryFileUpload $component): void {
+        $this->saveRelationshipsUsing(static function (SpatieMediaLibraryFileUpload $component) {
             $component->deleteAbandonedFiles();
             $component->saveUploadedFiles();
         });
@@ -245,7 +251,7 @@ class SpatieMediaLibraryFileUpload extends FileUpload
 
         $record
             ->getMedia($this->getCollection() ?? 'default')
-            ->whereNotIn('uuid', array_keys($this->getRawState() ?? []))
+            ->whereNotIn('uuid', array_keys($this->getState() ?? []))
             ->when($this->hasMediaFilter(), fn (Collection $media): Collection => $this->filterMedia($media))
             ->each(fn (Media $media) => $media->delete());
     }

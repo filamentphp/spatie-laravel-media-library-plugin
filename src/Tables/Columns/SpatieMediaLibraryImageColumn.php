@@ -175,7 +175,7 @@ class SpatieMediaLibraryImageColumn extends ImageColumn
 
         if ($this->hasRelationship($query->getModel())) {
             return $query->with([
-                "{$this->getRelationshipName($query->getModel())}.media" => $modifyMediaQuery,
+                "{$this->getRelationshipName()}.media" => $modifyMediaQuery,
             ]);
         }
 
