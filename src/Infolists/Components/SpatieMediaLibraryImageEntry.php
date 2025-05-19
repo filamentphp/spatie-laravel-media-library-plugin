@@ -111,7 +111,7 @@ class SpatieMediaLibraryImageEntry extends ImageEntry
             if ($this->getVisibility() === 'private') {
                 try {
                     return $media->getTemporaryUrl(
-                        now()->addMinutes(5),
+                        now()->addMinutes(30)->endOfHour(),
                         $conversion ?? '',
                     );
                 } catch (Throwable $exception) {

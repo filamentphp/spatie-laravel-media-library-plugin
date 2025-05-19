@@ -173,6 +173,51 @@ SpatieMediaLibraryFileUpload::make('images')
     )
 ```
 
+### Using media library for rich editor file attachments
+
+You can use media library to store file attachments in the [rich editor](https://filamentphp.com/docs/forms/rich-editor). To do this, you must [register a rich content attribute](https://filamentphp.com/docs/forms/rich-editor#registering-rich-content-attributes) on your model, similar to how a media library collection is registered. You should call `fileAttachmentProvider()` on the attribute registration, passing in a `SpatieMediaLibraryFileAttachmentProvider::make()` object:
+
+```php
+use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
+use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
+use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model implements HasRichContent
+{
+    use InteractsWithRichContent;
+
+    public function setUpRichContent(): void
+    {
+        $this->registerRichContent('content')
+            ->fileAttachmentsProvider(SpatieMediaLibraryFileAttachmentProvider::make());
+    }
+}
+```
+
+A media collection with the same name as the attribute (`content` in this example) will be used for the file attachments. The collection must not contain any other media apart from file attachments for that attribute, since Filament will clear any unused media from the collection when the model is saved. To customize the name of the collection, you can pass it to the `collection()` method of the provider:
+
+```php
+use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
+use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
+use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model implements HasRichContent
+{
+    use InteractsWithRichContent;
+
+    public function setUpRichContent(): void
+    {
+        $this->registerRichContent('content')
+            ->fileAttachmentsProvider(
+                SpatieMediaLibraryFileAttachmentProvider::make()
+                    ->collection('content-file-attachments'),
+            );
+    }
+}
+```
+
 ## Table column
 
 To use the media library image column:
