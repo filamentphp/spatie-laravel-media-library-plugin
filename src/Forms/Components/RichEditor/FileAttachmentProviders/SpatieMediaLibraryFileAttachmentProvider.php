@@ -2,7 +2,6 @@
 
 namespace Filament\Forms\Components\RichEditor\FileAttachmentProviders;
 
-use Closure;
 use Exception;
 use Filament\Forms\Components\RichEditor\FileAttachmentProviders\Contracts\FileAttachmentProvider;
 use Filament\Forms\Components\RichEditor\RichContentAttribute;
@@ -66,7 +65,7 @@ class SpatieMediaLibraryFileAttachmentProvider implements FileAttachmentProvider
         return $this->media = $media;
     }
 
-    public function getFileAttachmentUrl(mixed $file, ?Closure $allowedFileAttachmentsFromOtherRecords = null): ?string
+    public function getFileAttachmentUrl(mixed $file): ?string
     {
         $media = $this->getMedia();
 
