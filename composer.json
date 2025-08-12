@@ -17,6 +17,9 @@
             "Filament\\": "src"
         }
     },
+    "conflict": {
+        "filament/filament": "<4.0.0"
+    },
     "config": {
         "sort-packages": true
     },
