@@ -190,7 +190,7 @@ class Post extends Model implements HasRichContent
     public function setUpRichContent(): void
     {
         $this->registerRichContent('content')
-            ->fileAttachmentsProvider(SpatieMediaLibraryFileAttachmentProvider::make());
+            ->fileAttachmentProvider(SpatieMediaLibraryFileAttachmentProvider::make());
     }
 }
 ```
@@ -210,7 +210,7 @@ class Post extends Model implements HasRichContent
     public function setUpRichContent(): void
     {
         $this->registerRichContent('content')
-            ->fileAttachmentsProvider(
+            ->fileAttachmentProvider(
                 SpatieMediaLibraryFileAttachmentProvider::make()
                     ->collection('content-file-attachments'),
             );
